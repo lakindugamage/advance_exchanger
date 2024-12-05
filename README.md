@@ -43,5 +43,5 @@ lib/<br>
 Clone this repository to your local machine using Git:
 
 ```bash
-git clone https://github.com/your-username/currency-converter.git
+git clone https://github.com/lakindugamage/advance_exchanger.git
 cd currency-converter

@@ -44,4 +44,3 @@ Clone this repository to your local machine using Git:
 
 ```bash
 git clone https://github.com/lakindugamage/advance_exchanger.git
-cd currency-converter

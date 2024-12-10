@@ -1,3 +1,4 @@
+import 'package:advance_exchanger/util/convert_util.dart';
 import 'package:country_currency_pickers/country.dart';
 import 'package:country_currency_pickers/country_picker_dropdown.dart';
 import 'package:country_currency_pickers/utils/utils.dart';
@@ -9,12 +10,14 @@ import 'package:provider/provider.dart';
 
 class CurrencyOutputTab extends StatefulWidget {
   final String targetCurrency;
+  final int targetCurrencyIndex;
   final double borderRadius;
   final double currencySelectorWidth;
 
   const CurrencyOutputTab({
     super.key,
     required this.targetCurrency,
+    required this.targetCurrencyIndex,
     this.borderRadius = 10,
     this.currencySelectorWidth = 125,
   });
@@ -38,7 +41,7 @@ class _CurrencyOutputTabState extends State<CurrencyOutputTab> {
 
   @override
   Widget build(BuildContext context) {
-    final _currency = Provider.of<CurrencyStore>(context);
+    final currency = Provider.of<CurrencyStore>(context);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -63,8 +66,12 @@ class _CurrencyOutputTabState extends State<CurrencyOutputTab> {
                   child: Observer(
                     builder: (_) {
                       // Display the converted value.
-                      final convertedValue =
-                          _currency.convertCurrency(widget.targetCurrency);
+                      final convertionRates = currency.conversionRates;
+                      final originalAmount = currency.amount;
+                      final convertedValue = convertCurrency(
+                          selectedCountry.currencyCode!,
+                          convertionRates,
+                          originalAmount);
                       return Text(
                         convertedValue,
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -93,10 +100,10 @@ class _CurrencyOutputTabState extends State<CurrencyOutputTab> {
                   onValuePicked: (Country? country) {
                     setState(() {
                       selectedCountry = country!;
-                      _currency
-                          .addTargetCurrency(selectedCountry.currencyCode!);
-                      _currency.setCountryCode(country);
-                      _currency.fetchConversionRates();
+                      currency.updateTargetCurrency(
+                        widget.targetCurrencyIndex,
+                        selectedCountry.currencyCode!,
+                      );
                     });
                   },
                 ),

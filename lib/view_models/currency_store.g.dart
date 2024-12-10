@@ -144,6 +144,17 @@ mixin _$CurrencyStore on _CurrencyStore, Store {
   }
 
   @override
+  void updateTargetCurrency(int index, String newCurrency) {
+    final _$actionInfo = _$_CurrencyStoreActionController.startAction(
+        name: '_CurrencyStore.updateTargetCurrency');
+    try {
+      return super.updateTargetCurrency(index, newCurrency);
+    } finally {
+      _$_CurrencyStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removeTargetCurrency(String currency) {
     final _$actionInfo = _$_CurrencyStoreActionController.startAction(
         name: '_CurrencyStore.removeTargetCurrency');
@@ -160,17 +171,6 @@ mixin _$CurrencyStore on _CurrencyStore, Store {
         name: '_CurrencyStore.setCountryCode');
     try {
       return super.setCountryCode(country);
-    } finally {
-      _$_CurrencyStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  String convertCurrency(String currency) {
-    final _$actionInfo = _$_CurrencyStoreActionController.startAction(
-        name: '_CurrencyStore.convertCurrency');
-    try {
-      return super.convertCurrency(currency);
     } finally {
       _$_CurrencyStoreActionController.endAction(_$actionInfo);
     }

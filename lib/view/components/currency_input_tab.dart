@@ -1,3 +1,4 @@
+import 'package:advance_exchanger/util/convert_util.dart';
 import 'package:country_currency_pickers/country.dart';
 import 'package:country_currency_pickers/country_picker_dropdown.dart';
 import 'package:country_currency_pickers/utils/utils.dart';
@@ -72,7 +73,7 @@ class _CurrencyInputTabState extends State<CurrencyInputTab> {
             ),
             child: Center(
               child: CountryPickerDropdown(
-                initialValue: currency.baseCountry.isoCode,
+                initialValue: currency.baseCountry.isoCode, // 'tr'
                 itemBuilder: _buildDropdownItem,
                 onValuePicked: (Country? country) {
                   // Update base country and trigger conversion rate update.
@@ -80,8 +81,13 @@ class _CurrencyInputTabState extends State<CurrencyInputTab> {
                   // Fetch conversion rates for all target currencies in the list.
                   currency.fetchConversionRates().then((_) {
                     // Once conversion rates are fetched, update all converters.
+                    // ignore: unused_local_variable
                     for (String targetCurrency in currency.targetCurrencies) {
-                      currency.convertCurrency(targetCurrency);
+                      convertCurrency(
+                        country.currencyCode!,
+                        currency.conversionRates,
+                        currency.amount,
+                      );
                     }
                   });
                 },
@@ -108,7 +114,7 @@ Widget _buildDropdownItem(Country country) => SizedBox(
             width: 8.0,
           ),
           Text(
-            "${country.currencyCode}",
+            "${country.currencyCode}", // currencyCode = USD, LKR
             style: const TextStyle(
               fontSize: 16,
             ),

@@ -1,5 +1,5 @@
 class CurrencyModel {
-  final String baseCurrency;
+  final String baseCurrency;  // LKR, USD
   final Map<String, num> rates;
 
   CurrencyModel({

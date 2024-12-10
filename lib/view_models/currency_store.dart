@@ -55,11 +55,19 @@ abstract class _CurrencyStore with Store {
   // It will only add the currency if it's not already in the list.
   @action
   void addTargetCurrency(String currency) {
-    if (!targetCurrencies.contains(currency)) {
-      targetCurrencies.add(currency);
-      _savePreferredCurrencies();
-    }
+    targetCurrencies.add(currency);
+    _savePreferredCurrencies();
   }
+
+  // Update targetCurrencies[] list when the Output Tab country is changed.
+  @action
+ void updateTargetCurrency(int index, String newCurrency) {
+  if (index >= 0 && index < targetCurrencies.length) {
+    targetCurrencies[index] = newCurrency; // Updates the item at the specified index
+    _savePreferredCurrencies();
+  }
+}
+
   
   // Removes a target currency from the list and updates conversion rates.
   @action
@@ -75,7 +83,7 @@ abstract class _CurrencyStore with Store {
     baseCountry = country;
   }
 
-  // Fetches the current conversion rates for the selected base currency.
+  // Fetches the current conversion rates for the selected base country.
   @action
   Future<void> fetchConversionRates() async {
     CurrencyModel currencyModel = await ApiService().fetchCurrencyRates(baseCountry.currencyCode!);
@@ -84,15 +92,15 @@ abstract class _CurrencyStore with Store {
 
   // Converts the provided amount to the given target currency using the conversion rates.
   // Returns the converted amount as a string formatted to two decimal places.
-  @action
-  String convertCurrency(String currency) {
-    if (conversionRates.containsKey(currency)) {
-      num convertedAmount = amount * conversionRates[currency]!;
-      return convertedAmount.toStringAsFixed(2);
-    } else {
-      return '0.00';
-    }
-  }
+  // @action
+  // String convertCurrency(String currency) {
+  //   if (conversionRates.containsKey(currency)) {
+  //     num convertedAmount = amount * conversionRates[currency]!;
+  //     return convertedAmount.toStringAsFixed(2);
+  //   } else {
+  //     return '0.00';
+  //   }
+  // }
   
   // Loads the list of preferred currencies from local storage (SharedPreferences).
   @action
